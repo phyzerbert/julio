@@ -55,6 +55,7 @@ class CustomerController extends Controller
         $item->phone_number = $request->get("phone_number");
         $item->address = $request->get("address");
         $item->city = $request->get("city");
+        $item->price_type = $request->get("price_type");
         $item->save();
         return response()->json('success');
     }
@@ -71,6 +72,7 @@ class CustomerController extends Controller
             'phone_number' => $request->get('phone_number'),
             'address' => $request->get('address'),
             'city' => $request->get('city'),
+            'price_type' => $request->get('price_type'),
         ]);
         return response()->json('success');
     }

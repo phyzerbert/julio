@@ -1,5 +1,15 @@
 @extends('layouts.auth')
-
+@section('style')
+    <style>
+        html {
+            background: url('images/login_bg.jpg') no-repeat;
+            background-size: cover;
+        }
+        body {
+            background: unset;
+        }
+    </style>
+@endsection
 @section('content')
     @php
         $verify_messages = [
@@ -11,12 +21,8 @@
 
     <div class="wrapper-page">
         <div class="card card-pages">
-            <div class="card-header" style="background-image: url('images/sign_in.jpg')"> 
-                <div class="bg-overlay"></div>
-                <h3 class="text-center m-t-10 text-white"> {{__('page.sign_in')}} <strong>{{ config("app.name") }}</strong> </h3>
-            </div> 
-
             <div class="card-body">
+                <h1 class="text-center text-primary">{{__('page.sign_in')}}</h1>
                 @error('phone')
                     <span class="text-danger mt-2" role="alert">
                         <strong>
@@ -60,11 +66,11 @@
                     </div>
                     
                     <div class="form-group row text-center mt-3">
-                        <div class="col-md-6 pt-3">
+                        <div class="col-12">
                             <a href="{{route('lang', 'en')}}" class="btn btn-outline p-0 @if(config('app.locale') == 'en') border-primary border-2 @endif" title="English"><img src="{{asset('images/lang/en.png')}}" width="45px"></a>
                             <a href="{{route('lang', 'es')}}" class="btn btn-outline ml-2 p-0 @if(config('app.locale') == 'es') border-primary border-2 @endif" title="Spanish"><img src="{{asset('images/lang/es.png')}}" width="45px"></a>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-12 mt-3">
                             <button class="btn btn-primary btn-lg w-lg waves-effect waves-light mt-2" type="submit"><i class="fa fa-sign-in"></i> {{__('page.sign_in')}}</button>
                         </div>
                     </div>

@@ -54,8 +54,9 @@
                                 <th>{{__('page.product_code')}}</th>
                                 <th>{{__('page.product_name')}}</th>
                                 <th>{{__('page.category')}}</th>
-                                <th>{{__('page.product_cost')}}</th>
-                                <th>{{__('page.product_price')}}</th>
+                                <th>{{__('page.price')}}1</th>
+                                <th>{{__('page.price')}}2</th>
+                                <th>{{__('page.price')}}3</th>
                                 <th>{{__('page.quantity')}}</th>
                                 <th>{{__('page.product_unit')}}</th>
                                 <th>{{__('page.alert_quantity')}}</th>
@@ -92,9 +93,10 @@
                                     </td>
                                     <td class="code">{{$item->code}}</td>
                                     <td class="name">{{$item->name}}</td>
-                                    <td class="category">@isset($item->category->name){{$item->category->name}}@endisset</td>
-                                    <td class="cost">{{number_format($item->cost)}}</td>
-                                    <td class="">{{number_format($item->price)}}</td>
+                                    <td class="category">{{$item->category->name ?? ''}}</td>
+                                    <td class="price1">{{number_format($item->price1, 2)}}</td>
+                                    <td class="price2">{{number_format($item->price2, 2)}}</td>
+                                    <td class="price3">{{number_format($item->price3, 2)}}</td>
                                     <td class="quantity">{{number_format($quantity)}}</td>
                                     <td class="unit">{{$item->unit}}</td>
                                     <td class="alert_quantity">{{$item->alert_quantity}}</td>

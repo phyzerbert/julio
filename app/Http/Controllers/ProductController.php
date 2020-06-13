@@ -8,7 +8,6 @@ use App\Models\Image;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Supplier;
-use App\Models\BarcodeSymbology;
 use App\Models\Tax;
 
 class ProductController extends Controller
@@ -46,32 +45,30 @@ class ProductController extends Controller
         config(['site.page' => 'product']);
         $categories = Category::all();
         $taxes = Tax::all();
-        $barcode_symbologies = BarcodeSymbology::all();
         $suppliers = Supplier::all();
-        return view('product.create', compact('categories', 'taxes', 'barcode_symbologies', 'suppliers'));
+        return view('product.create', compact('categories', 'taxes', 'suppliers'));
     }
 
     public function save(Request $request){
         $request->validate([
             'name'=>'required|string',
             'code'=>'required|string|unique:products',
-            'barcode_symbology_id'=>'required',
             'category_id'=>'required',
             'unit'=>'required|string',
-            'cost'=>'required|numeric',
-            'price'=>'required|numeric',
+            'price1'=>'required|numeric',
+            'price2'=>'required|numeric',
+            'price3'=>'required|numeric',
         ]);
         $data = $request->all();
         $item = new Product();
         $item->name = $data['name'];
         $item->code = $data['code'];
-        $item->barcode_symbology_id = $data['barcode_symbology_id'];
         $item->category_id = $data['category_id'];
         $item->unit = $data['unit'];
-        $item->cost = $data['cost'];
-        $item->price = $data['price'];
+        $item->price1 = $data['price1'];
+        $item->price2 = $data['price2'];
+        $item->price3 = $data['price3'];
         $item->tax_id = $data['tax_id'];
-        // $item->tax_method = $data['tax_method'];
         $item->alert_quantity = $data['alert_quantity'];
         $item->supplier_id = $data['supplier_id'];
         $item->detail = $data['detail'];        
@@ -97,10 +94,9 @@ class ProductController extends Controller
         $product = Product::find($id);
         $categories = Category::all();
         $taxes = Tax::all();
-        $barcode_symbologies = BarcodeSymbology::all();
         $suppliers = Supplier::all();
 
-        return view('product.edit', compact('product', 'categories', 'taxes', 'barcode_symbologies', 'suppliers'));
+        return view('product.edit', compact('product', 'categories', 'taxes', 'suppliers'));
     }
 
     public function detail(Request $request, $id){
@@ -114,11 +110,11 @@ class ProductController extends Controller
         $request->validate([
             'name'=>'required|string',
             'code'=>'required|string',
-            'barcode_symbology_id'=>'required',
             'category_id'=>'required',
             'unit'=>'required|string',
-            'cost'=>'required|numeric',
-            'price'=>'required|numeric',
+            'price1'=>'required|numeric',
+            'price2'=>'required|numeric',
+            'price3'=>'required|numeric',
         ]);
         $data = $request->all();
         $item = Product::find($request->get("id"));
@@ -156,29 +152,25 @@ class ProductController extends Controller
             'unit'=>'required|string',
         ]);
         $data = $request->all();
-        // dd($data);
         $item = new Product();
         $item->name = $data['name'];
         $item->code = $data['code'];
-        // $item->barcode_symbology_id = $data['barcode_symbology_id'];
-        // $item->category_id = $data['category_id'];
         $item->unit = $data['unit'];
-        $item->cost = $data['cost'];
-        // $item->price = $data['price'];
-        // $item->tax_id = $data['tax_id'];
-        // $item->tax_method = $data['tax_method'];
-        // $item->alert_quantity = $data['alert_quantity'];
-        // $item->supplier_id = $data['supplier_id'];
-        // $item->detail = $data['detail'];
-
-        if($request->has("image")){
-            $picture = request()->file('image');
-            $imageName = "product_".time().'.'.$picture->getClientOriginalExtension();
-            $picture->move(public_path('images/uploaded/product_images/'), $imageName);
-            $item->image = 'images/uploaded/product_images/'.$imageName;
-        }
+        $item->price1 = $data['price1'];
+        $item->price2 = $data['price2'];
+        $item->price3 = $data['price3'];
         $item->save();
-
+        if($request->file("image")){
+            foreach ($request->file('image') as $key => $picture) {
+                $imageName = "product_".time() . $key . '.' . $picture->getClientOriginalExtension();
+                $picture->move(public_path('images/uploaded/product_images/'), $imageName);
+                Image::create([
+                    'imageable_id' => $item->id,
+                    'imageable_type' => 'App\Models\Product',
+                    'path' => 'images/uploaded/product_images/'.$imageName,
+                ]);
+            }
+        }
         return response()->json($item);
     }
 

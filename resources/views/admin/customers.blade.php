@@ -40,6 +40,7 @@
                                 <th>{{__('page.phone_number')}}</th>
                                 <th>{{__('page.city')}}</th>
                                 <th>{{__('page.address')}}</th>
+                                <th>{{__('page.price_type')}}</th>
                                 <th>{{__('page.action')}}</th>
                             </tr>
                         </thead>
@@ -53,6 +54,7 @@
                                     <td class="phone_number">{{$item->phone_number}}</td>
                                     <td class="city">{{$item->city}}</td>
                                     <td class="address">{{$item->address}}</td>
+                                    <td class="price_type" data-value="{{$item->price_type}}">{{__('page.price')}} {{$item->price_type}}</td>
                                     <td class="py-2 text-center">                                        
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-info dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,6 +139,14 @@
                                 <strong></strong>
                             </span>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label">{{__('page.price_type')}}</label>
+                            <select name="price_type" class="form-control price_type">
+                                <option value="1" selected>{{__('page.price')}} 1</option>
+                                <option value="2">{{__('page.price')}} 2</option>
+                                <option value="3">{{__('page.price')}} 3</option>
+                            </select>
+                        </div>
                     </div>    
                     <div class="modal-footer">
                         <button type="button" id="btn_create" class="btn btn-primary btn-submit"><i class="fa fa-check mg-r-10"></i>&nbsp;{{__('page.save')}}</button>
@@ -198,6 +208,14 @@
                             <span id="edit_city_error" class="invalid-feedback">
                                 <strong></strong>
                             </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">{{__('page.price_type')}}</label>
+                            <select name="price_type" class="form-control price_type">
+                                <option value="1" selected>{{__('page.price')}} 1</option>
+                                <option value="2">{{__('page.price')}} 2</option>
+                                <option value="3">{{__('page.price')}} 3</option>
+                            </select>
                         </div>
                     </div>  
                     <div class="modal-footer">
@@ -289,6 +307,7 @@
             let phone_number = $(this).parents('tr').find(".phone_number").text().trim();
             let city = $(this).parents('tr').find(".city").text().trim();
             let address = $(this).parents('tr').find(".address").text().trim();
+            let price_type = $(this).parents('tr').find(".address").data('value');
 
             $("#edit_form input.form-control").val('');
             $("#editModal .id").val(id);
@@ -298,6 +317,7 @@
             $("#editModal .phone_number").val(phone_number);
             $("#editModal .city").val(city);
             $("#editModal .address").val(address);
+            $("#editModal .price_type").val(price_type);
 
             $("#editModal").modal();
         });

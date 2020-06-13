@@ -17,13 +17,12 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('code')->nullable();
-            $table->integer('barcode_symbology_id')->nullable();
             $table->integer('category_id')->nullable();
             $table->string('unit')->nullable();
-            $table->integer('cost')->nullable();
-            $table->integer('price')->nullable();
+            $table->decimal('price1', 8, 2)->nullable();
+            $table->decimal('price2', 8, 2)->nullable();
+            $table->decimal('price3', 8, 2)->nullable();
             $table->integer('tax_id')->nullable();
-            $table->integer('tax_method')->nullable();
             $table->integer('alert_quantity')->nullable();
             $table->integer('supplier_id')->nullable();
             $table->string('image')->nullable();

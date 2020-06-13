@@ -131,6 +131,7 @@ return [
     'cost' => 'Cost',
     'product_cost' => 'Product Cost',
     'price' => 'Price',
+    'price_type' => 'Price Type',
     'product_price' => 'Product Price',
     'product_detail' => 'Product Detail',
     'product_tax' => 'Product Tax',

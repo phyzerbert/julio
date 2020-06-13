@@ -15,6 +15,5 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(CompanyTableSeeder::class);
         $this->call(TaxesTableSeeder::class);
-        $this->call(BarcodeSymbologiesTableSeeder::class);
     }
 }

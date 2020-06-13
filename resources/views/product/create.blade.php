@@ -47,22 +47,6 @@
                         </div>
                         <div class="col-lg-4 col-md-6 mt-3">
                             <div class="form-group">
-                                <label class="form-control-label">{{__('page.barcode_symbology')}}: <span class="tx-danger">*</span></label>
-                                <select class="form-control select2" name="barcode_symbology_id" data-placeholder="{{__('page.barcode_symbology')}}" required>
-                                    <option label="{{__('page.barcode_symbology')}}"></option>
-                                    @foreach ($barcode_symbologies as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
-                                @error('barcode_symbology_id')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-3">
-                            <div class="form-group">
                                 <label class="form-control-label">{{__('page.select_category')}}: <span class="tx-danger">*</span></label>
                                 <select class="form-control select2" name="category_id" data-placeholder="{{__('page.select_category')}}" required>
                                     <option label="{{__('page.select_category')}}"></option>
@@ -71,6 +55,39 @@
                                     @endforeach
                                 </select>
                                 @error('category_id')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-control-label">{{__('page.product_price')}}1: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="number" step="0.01" min="0" name="price1" placeholder="{{__('page.product_price')}}1" required>
+                                @error('price1')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-control-label">{{__('page.product_price')}}2: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="number" step="0.01" min="0" name="price2" placeholder="{{__('page.product_price')}}2" required>
+                                @error('price2')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-control-label">{{__('page.product_price')}}3: <span class="tx-danger">*</span></label>
+                                <input class="form-control" type="number" step="0.01" min="0" name="price3" placeholder="{{__('page.product_price')}}3" required>
+                                @error('price3')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -90,47 +107,15 @@
                         </div>
                         <div class="col-lg-4 col-md-6 mt-3">
                             <div class="form-group">
-                                <label class="form-control-label">{{__('page.product_cost')}}: <span class="tx-danger">*</span></label>
-                                <input class="form-control" type="text" name="cost" placeholder="{{__('page.product_cost')}}" required>
-                                @error('cost')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-3">
-                            <div class="form-group">
-                                <label class="form-control-label">{{__('page.product_price')}}: <span class="tx-danger">*</span></label>
-                                <input class="form-control" type="text" name="price" placeholder="{{__('page.product_price')}}" required>
-                                @error('price')
-                                    <span class="invalid-feedback d-block" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-3">
-                            <div class="form-group">
                                 <label class="form-control-label">{{__('page.product_tax')}}:</label>
                                 <select class="form-control select2" name="tax_id" data-placeholder="{{__('page.select_tax')}}">
                                     <option label="{{__('page.select_tax')}}"></option>
                                     @foreach ($taxes as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                        <option value="{{$item->id}}" @if($item->id == 4) selected @endif>{{$item->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>                        
-                        {{-- <div class="col-lg-4 col-md-6 mt-3">
-                            <div class="form-group">
-                                <label class="form-control-label">{{__('page.tax_method')}}:</label>
-                                <select class="form-control select2" name="tax_method" data-placeholder="{{__('page.select_tax_method')}}">
-                                    <option label="{{__('page.select_tax_method')}}"></option>
-                                    <option value="0" selected>Inclusive</option>
-                                    <option value="1">Exclusive</option>
-                                </select>
-                            </div>
-                        </div> --}}
+                        </div>
                         <div class="col-lg-4 col-md-6 mt-3">
                             <div class="form-group">
                                 <label class="form-control-label">{{__('page.alert_quantity')}}:</label>

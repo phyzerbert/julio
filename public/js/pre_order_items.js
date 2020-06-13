@@ -93,7 +93,6 @@ var app = new Vue({
                         this.order_items.push({
                             product_id: response.data.id,
                             product_name_code: response.data.name + "(" + response.data.code + ")",
-                            cost: response.data.cost,
                             discount: 0,
                             discount_string: 0,
                             quantity: 1,

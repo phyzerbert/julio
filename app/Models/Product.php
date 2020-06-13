@@ -7,9 +7,7 @@ use App\Models\Order;
 
 class Product extends Model
 {
-    protected $fillable = [
-        'name', 'code', 'barcode_symbology_id', 'category_id', 'unit', 'cost', 'price', 'tax_id', 'tax_method', 'alert_quantity', 'supplier_id', 'image', 'detail', 
-    ];
+    protected $guarded = [];
 
     public function category(){
         return $this->belongsTo('App\Models\Category');
@@ -17,10 +15,6 @@ class Product extends Model
 
     public function supplier(){
         return $this->belongsTo('App\Models\Supplier');
-    }
-
-    public function barcode_symbology(){
-        return $this->belongsTo('App\Models\BarcodeSymbology', 'barcode_symbology_id');
     }
 
     public function tax(){
