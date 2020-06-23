@@ -36,7 +36,7 @@ var app = new Vue({
                     this.order_items.push({
                         product_id: response.data.id,
                         product_name_code: response.data.name + "(" + response.data.code + ")",
-                        cost: response.data.cost,
+                        cost: parseFloat(response.data.cost),
                         tax_name: tax_name,
                         tax_rate: tax_rate,
                         quantity: 1,

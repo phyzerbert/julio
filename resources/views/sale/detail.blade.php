@@ -59,12 +59,12 @@
                                     <h3 class="text-white mb-2">{{__('page.reference')}}</h3>
                                     <p class="text-light" style="font-size:16px;"><strong>{{__('page.number')}}</strong> : {{$sale->reference_no}}</p>
                                     <p class="text-light" style="font-size:16px;"><strong>{{__('page.date')}}</strong> : {{$sale->timestamp}}</p>
-                                    <p class="text-light" style="font-size:16px;">
+                                    {{-- <p class="text-light" style="font-size:16px;">
                                         <strong>{{__('page.attachment')}} : </strong>
                                         @if ($sale->attachment != "")
                                             <a href="#" class="attachment" data-value="{{$sale->attachment}}">&nbsp;&nbsp;&nbsp;<i class="fa fa-paperclip"></i></a>
                                         @endif
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>

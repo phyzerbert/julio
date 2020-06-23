@@ -14,7 +14,8 @@ var app = new Vue({
             type: 'sale',
             id: $('#sale_id').val()
         },
-        grand_total: 0
+        grand_total: 0,
+        customer_price_type: $("#select_customer").children("option:selected").data('value'),
     },
 
 
@@ -66,8 +67,8 @@ var app = new Vue({
             let total_quantity = 0;
             let total_price = 0;
             for(let i = 0; i < data.length; i++) {
-                this.order_items[i].sub_total = (parseInt(data[i].price) + (data[i].price*data[i].tax_rate)/100) * data[i].quantity
-                total_quantity += parseInt(data[i].quantity)
+                this.order_items[i].sub_total = (parseFloat(data[i].price) + (data[i].price*data[i].tax_rate)/100) * data[i].quantity
+                total_quantity += parseFloat(data[i].quantity)
                 total_price += data[i].sub_total
             }
 
@@ -79,13 +80,23 @@ var app = new Vue({
         },
         remove(i) {
             this.order_items.splice(i, 1)
+        },
+        changeCustomer(e) {
+            price_type = e.target.options[e.target.selectedIndex].getAttribute('data-value');
+            if(price_type) {
+                this.customer_price_type = price_type;
+                this.order_items.map(item => {
+                    item.price = item.product['price'+price_type];
+                });
+            }
         }
     },
     
     filters: {
         currency: function (value) {
-            let val = value;
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            let val = parseFloat(value);
+            return val.toFixed(2);
+            // return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     },
 
@@ -94,7 +105,7 @@ var app = new Vue({
         axios.post('/get_orders', this.params)
             .then(response => {
                 for (let i = 0; i < response.data.length; i++) {
-                    const element = response.data[i];
+                    let element = response.data[i];
                     axios.post('/get_product', {id:element.product_id})
                     .then(response1 => {
                         let tax_name = (response1.data.tax) ? response1.data.tax.name : ''
@@ -108,6 +119,7 @@ var app = new Vue({
                             quantity: element.quantity,
                             sub_total: element.subtotal,
                             order_id: element.id,
+                            product: element.product,
                         })
                     })
                     .catch(error => {
@@ -131,13 +143,15 @@ var app = new Vue({
                     .then(resp => {
                         response(
                             $.map(resp.data, function(item) {
+                                let price = parseFloat(item['price'+app.customer_price_type]).toFixed(2);
                                 return {
                                     label: item.name + "(" + item.code + ")",
                                     value: item.name + "(" + item.code + ")",
                                     id: item.id,
-                                    price: item.price ? item.price : 0,
-                                    tax_name: item.tax.name,
-                                    tax_rate: item.tax.rate,
+                                    price: price,
+                                    tax_name: item.tax ? item.tax.name : '',
+                                    tax_rate: item.tax ? item.tax.rate : 0,
+                                    product: item,
                                 }
                             })
                         );
@@ -150,13 +164,24 @@ var app = new Vue({
             minLength: 1,
             select: function( event, ui ) {
                 let index = $(".product").index($(this));
+                // app.order_items[index].product_id = ui.item.id
+                // app.order_items[index].product_name_code = ui.item.label
+                // app.order_items[index].price = ui.item.price
+                // app.order_items[index].tax_name = ui.item.tax_name
+                // app.order_items[index].tax_rate = ui.item.tax_rate
+                // app.order_items[index].quantity = 1
+                // app.order_items[index].sub_total = ui.item.cost + (ui.item.cost*ui.item.tax_rate)/100
+
+                let price = parseFloat(ui.item.product['price'+app.customer_price_type]).toFixed(2);
+                console.log(price);
                 app.order_items[index].product_id = ui.item.id
                 app.order_items[index].product_name_code = ui.item.label
-                app.order_items[index].price = ui.item.price
+                app.order_items[index].price = price
                 app.order_items[index].tax_name = ui.item.tax_name
                 app.order_items[index].tax_rate = ui.item.tax_rate
-                app.order_items[index].quantity = 1
-                app.order_items[index].sub_total = ui.item.cost + (ui.item.cost*ui.item.tax_rate)/100
+                app.order_items[index].quantity = 0
+                app.order_items[index].sub_total = price + (price*ui.item.tax_rate)/100
+                app.order_items[index].product = ui.item.product;
             }
         });
     }

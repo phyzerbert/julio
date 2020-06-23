@@ -41,7 +41,6 @@
                                 <th>{{__('page.reference_no')}}</th>
                                 <th>{{__('page.user')}}</th>
                                 <th>{{__('page.customer')}}</th>
-                                {{-- <th>{{__('page.sale_status')}}</th> --}}
                                 <th>{{__('page.grand_total')}}</th>
                                 <th>{{__('page.paid')}}</th>
                                 <th>{{__('page.balance')}}</th>
@@ -66,16 +65,9 @@
                                     <td class="reference_no">{{$item->reference_no}}</td>
                                     <td class="user">{{$item->biller->name}}</td>
                                     <td class="customer" data-id="{{$item->customer_id}}">{{$item->customer->name}}</td>
-                                    {{-- <td class="status">
-                                        @if ($item->status == 1)
-                                            <span class="badge badge-success">{{__('page.received')}}</span>
-                                        @elseif($item->status == 0)
-                                            <span class="badge badge-primary">{{__('page.pending')}}</span>
-                                        @endif
-                                    </td> --}}
-                                    <td class="grand_total"> {{number_format($grand_total)}} </td>
-                                    <td class="paid"> {{ number_format($paid) }} </td>
-                                    <td class="balance" data-value="{{$grand_total - $paid}}"> {{number_format($grand_total - $paid)}} </td>
+                                    <td class="grand_total"> {{number_format($grand_total, 2)}} </td>
+                                    <td class="paid"> {{ number_format($paid, 2) }} </td>
+                                    <td class="balance" data-value="{{$grand_total - $paid}}"> {{number_format($grand_total - $paid, 2)}} </td>
                                     <td>
                                         @if ($paid == 0)
                                             <span class="badge badge-danger">{{__('page.pending')}}</span>
@@ -107,9 +99,9 @@
                         <tfoot>
                             <tr>
                                 <th colspan="5">{{__('page.total')}}</th>
-                                <th>{{number_format($footer_grand_total)}}</th>
-                                <th>{{number_format($footer_paid)}}</th>
-                                <th>{{number_format($footer_grand_total - $footer_paid)}}</th>
+                                <th>{{number_format($footer_grand_total, 2)}}</th>
+                                <th>{{number_format($footer_paid, 2)}}</th>
+                                <th>{{number_format($footer_grand_total - $footer_paid, 2)}}</th>
                                 <th colspan="2"></th>
                             </tr>
                         </tfoot>

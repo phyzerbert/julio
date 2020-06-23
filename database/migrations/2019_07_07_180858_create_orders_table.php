@@ -16,10 +16,10 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('product_id')->nullable();
-            $table->integer('cost')->nullable();
-            $table->integer('price')->nullable();
+            $table->decimal('cost', 8, 2)->nullable();
+            $table->decimal('price', 8, 2)->nullable();
             $table->integer('quantity')->nullable();
-            $table->integer('subtotal')->nullable();
+            $table->decimal('subtotal', 8, 2)->nullable();
             $table->date('expiry_date')->nullable();
             $table->string('serial_no')->nullable();
             $table->integer('orderable_id')->nullable();

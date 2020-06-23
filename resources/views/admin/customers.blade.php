@@ -307,7 +307,7 @@
             let phone_number = $(this).parents('tr').find(".phone_number").text().trim();
             let city = $(this).parents('tr').find(".city").text().trim();
             let address = $(this).parents('tr').find(".address").text().trim();
-            let price_type = $(this).parents('tr').find(".address").data('value');
+            let price_type = $(this).parents('tr').find(".price_type").data('value');
 
             $("#edit_form input.form-control").val('');
             $("#editModal .id").val(id);

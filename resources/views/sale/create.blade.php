@@ -34,7 +34,7 @@
                 <form class="form-layout form-layout-1" action="{{route('sale.save')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-4">
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-6 col-lg-3">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.sale_date')}} <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" name="date" id="sale_date" value="{{date('Y-m-d H:i')}}" placeholder="{{__('page.sale_date')}}" autocomplete="off" required>
@@ -45,7 +45,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-6 col-lg-3">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.reference_number')}}</label>
                                 <input class="form-control" type="text" name="reference_number" value="{{ old('reference_number') }}" placeholder="{{__('page.reference_number')}}" required>
@@ -56,15 +56,13 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-6 col-lg-3">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.user')}}</label>
                                 <input type="text" name="user" class="form-control" value="{{Auth::user()->name}}" readonly />
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">                        
-                        <div class="col-md-6 col-lg-4">
+                        </div>                       
+                        <div class="col-md-6 col-lg-3">
                             @php
                                 $auth_store = Auth::user()->company->stores()->first();
                             @endphp
@@ -73,16 +71,29 @@
                                 <input type="text" name="store" class="form-control" value="{{$auth_store->name}}" readonly />
                             </div>
                         </div>
+                    </div>
+                    <div class="row mb-4"> 
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-group mb-2">
+                                <label class="form-control-label">{{__('page.credit_days')}}</label>
+                                <input class="form-control" type="number" name="credit_days" value="{{ old('credit_days') }}" placeholder="{{__('page.credit_days')}}">
+                                @error('credit_days')
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-md-6 col-lg-4">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.customer')}}</label>
-                                <select class="form-control select2-show-search" name="customer" data-placeholder="{{__('page.select_customer')}}" required>
+                                <select class="form-control select2-show-search" name="customer" data-placeholder="{{__('page.select_customer')}}" @change="changeCustomer($event)" required>
                                     <option label="{{__('page.select_customer')}}"></option>
                                     @foreach ($customers as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                        <option value="{{$item->id}}" data-value="{{$item->price_type}}">{{$item->name}}</option>
                                     @endforeach
                                 </select>
-                                @error('supplier')
+                                @error('customer')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -120,7 +131,14 @@
                                                 <input type="hidden" name="product_id[]" class="product_id" :value="item.product_id" />
                                                 <input type="text" name="product_name[]" ref="product" class="form-control form-control-sm product" v-model="item.product_name_code" required />
                                             </td>
-                                            <td><input type="number" class="form-control form-control-sm" name="price[]" v-model="item.price" placeholder="{{__('page.product_price')}}" /></td>
+                                            <td>
+                                                {{-- <input type="number" class="form-control form-control-sm" name="price[]" v-model="item.price" placeholder="{{__('page.product_price')}}" /> --}}
+                                                <select name="price[]" class="form-control form-control-sm" v-model="item.price" placeholder="{{__('page.product_price')}}">
+                                                    <option :value="item.product.price1" :selected="customer_price_type == 1">@{{item.product.price1}}</option>
+                                                    <option :value="item.product.price2" :selected="customer_price_type == 2">@{{item.product.price2}}</option>
+                                                    <option :value="item.product.price3" :selected="customer_price_type == 3">@{{item.product.price3}}</option>
+                                                </select>
+                                            </td>
                                             <td><input type="number" class="form-control form-control-sm  quantity" name="quantity[]" v-model="item.quantity" placeholder="{{__('page.quantity')}}" /></td>
                                             <td class="tax">@{{item.tax_name}}</td>
                                             <td class="subtotal">

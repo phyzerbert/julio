@@ -101,6 +101,7 @@ class SaleController extends Controller
         $item->biller_id = Auth::id();
         $item->timestamp = $data['date'].":00";
         $item->reference_no = $data['reference_number'];
+        $item->credit_days = $data['credit_days'];
         $item->store_id = $auth_store->id;
         $item->company_id = $auth_store->company_id;
         $item->customer_id = $data['customer'];
@@ -118,15 +119,15 @@ class SaleController extends Controller
 
         for ($i=0; $i < count($data['product_id']); $i++) {             
             
-            $store_product = StoreProduct::where('store_id', $auth_store->id)->where('product_id', $data['product_id'][$i])->first();
-            if(isset($store_product)){
-                if($store_product->quantity < $data['quantity'][$i]){
-                    continue;
-                }
-                $store_product->decrement('quantity', $data['quantity'][$i]);
-            }else{
-                continue;
-            }
+            // $store_product = StoreProduct::where('store_id', $auth_store->id)->where('product_id', $data['product_id'][$i])->first();
+            // if(isset($store_product)){
+            //     if($store_product->quantity < $data['quantity'][$i]){
+            //         continue;
+            //     }
+            //     $store_product->decrement('quantity', $data['quantity'][$i]);
+            // }else{
+            //     continue;
+            // }
 
             Order::create([
                 'product_id' => $data['product_id'][$i],
@@ -184,6 +185,7 @@ class SaleController extends Controller
         $store = $item->store;
         $item->company_id = $store->company_id;
         $item->customer_id = $data['customer'];
+        $item->credit_days = $data['credit_days'];
         // $item->status = $data['status'];
         $item->note = $data['note'];
 

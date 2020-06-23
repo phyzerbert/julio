@@ -9,6 +9,8 @@ class Order extends Model
     
     protected $guarded = [];
 
+    protected $with = ['product'];
+
     public function orderable(){
         return $this->morphTo();
     }

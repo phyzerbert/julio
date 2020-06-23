@@ -52,10 +52,21 @@ return [
     'user' => 'User',
     'customer' => 'Customer',
     'supplier' => 'Supplier',
-    'setting' => 'Setting',
+    'setting' => 'Setting', 
     'category' => 'Category',
+    'transaction_category' => 'Transaction Category',
     'company' => 'Company',
     'store' => 'Store',
+    'transaction' => 'Transaction',
+    'daily_transaction' => 'Daily Transaction',
+    'transaction_management' => 'Transaction Management', 
+    'add_transaction' => 'Add Transaction', 
+    'edit_transaction' => 'Edit Transaction', 
+    'incoming' => 'Incoming',
+    'expense' => 'Expense',
+    'total_incoming' => 'Total Incoming',
+    'total_expense' => 'Total Expense',
+    'total_balance' => 'Total Balance',
 
     // ******** Common ********
     'purchase' => 'Purchase',
@@ -324,4 +335,7 @@ return [
     'edit_return' => 'Edit Return',
     'return_list' => 'Return List',
     'return_report' => 'Return Report',
+
+
+
 ];

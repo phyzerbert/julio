@@ -54,13 +54,18 @@
                                 <th>{{__('page.product_code')}}</th>
                                 <th>{{__('page.product_name')}}</th>
                                 <th>{{__('page.category')}}</th>
+                                @if($role != 'secretary')
+                                    <th>{{__('page.cost')}}</th>
+                                @endif
                                 <th>{{__('page.price')}}1</th>
                                 <th>{{__('page.price')}}2</th>
                                 <th>{{__('page.price')}}3</th>
-                                <th>{{__('page.quantity')}}</th>
-                                <th>{{__('page.product_unit')}}</th>
-                                <th>{{__('page.alert_quantity')}}</th>
-                                <th>{{__('page.action')}}</th>
+                                @if($role != 'secretary')
+                                    <th>{{__('page.quantity')}}</th>
+                                    <th>{{__('page.product_unit')}}</th>
+                                    <th>{{__('page.alert_quantity')}}</th>
+                                    <th>{{__('page.action')}}</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -94,24 +99,29 @@
                                     <td class="code">{{$item->code}}</td>
                                     <td class="name">{{$item->name}}</td>
                                     <td class="category">{{$item->category->name ?? ''}}</td>
+                                    @if($role != 'secretary')
+                                        <td class="cost">{{number_format($item->cost, 2)}}</td>
+                                    @endif
                                     <td class="price1">{{number_format($item->price1, 2)}}</td>
                                     <td class="price2">{{number_format($item->price2, 2)}}</td>
                                     <td class="price3">{{number_format($item->price3, 2)}}</td>
-                                    <td class="quantity">{{number_format($quantity)}}</td>
-                                    <td class="unit">{{$item->unit}}</td>
-                                    <td class="alert_quantity">{{$item->alert_quantity}}</td>
-                                    <td class="py-2" align="center">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-info dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{__('page.action')}}
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="{{route('product.detail', $item->id)}}" class="dropdown-item">{{__('page.details')}}</a></li>
-                                                <li><a href="{{route('product.edit', $item->id)}}" class="dropdown-item">{{__('page.edit')}}</a></li>
-                                                <li><a href="{{route('product.delete', $item->id)}}" class="dropdown-item btn-confirm">{{__('page.delete')}}</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
+                                    @if($role != 'secretary')
+                                        <td class="quantity">{{number_format($quantity)}}</td>
+                                        <td class="unit">{{$item->unit}}</td>
+                                        <td class="alert_quantity">{{$item->alert_quantity}}</td>
+                                        <td class="py-2" align="center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-info dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    {{__('page.action')}}
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="{{route('product.detail', $item->id)}}" class="dropdown-item">{{__('page.details')}}</a></li>
+                                                    <li><a href="{{route('product.edit', $item->id)}}" class="dropdown-item">{{__('page.edit')}}</a></li>
+                                                    <li><a href="{{route('product.delete', $item->id)}}" class="dropdown-item btn-confirm">{{__('page.delete')}}</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

@@ -23,7 +23,7 @@
         
         <div id="sidebar-menu">
             <ul>
-                @if ($role != 'buyer')
+                @if ($role != 'buyer' && $role != 'secretary')
                     <li class="@if($page == 'home') active @endif">
                         <a href="{{route('home')}}" class="waves-effect @if($page == 'home') active @endif"><i class="fa fa-dashboard"></i><span> {{__('page.dashboard')}} </span></a>
                     </li>
@@ -34,30 +34,31 @@
                     @php
                         $purchase_items = ['purchase', 'purchase_list', 'purchase_create'];
                     @endphp
-
-                    <li class="has_sub">
-                        <a href="#" class="waves-effect @if($page == in_array($page, $purchase_items)) active subdrop @endif"><i class="fa fa-sign-in"></i><span> {{__('page.purchases')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                        <ul class="list-unstyled">
-                            <li class="@if($page == 'purchase_list') active @endif"><a href="{{route('purchase.index')}}" class="@if($page == 'purchase_list') active @endif">{{__('page.purchases_list')}}</a></li>
-                            @if($user->hasRole('user') || $user->hasRole('secretary'))
-                                <li class="@if($page == 'purchase_create') active @endif"><a href="{{route('purchase.create')}}" class="@if($page == 'purchase_create') active @endif">{{__('page.add_purchase')}}</a></li>
-                            @endif
-                        </ul>
-                    </li>
                     @if($role != 'secretary')
-                        {{-- Sale --}}
-                        @php
-                            $sale_items = ['sale', 'sale_list', 'sale_create'];
-                        @endphp
                         <li class="has_sub">
-                            <a href="#" class="waves-effect @if($page == in_array($page, $sale_items)) active subdrop @endif"><i class="fa fa-sign-out"></i><span> {{__('page.sales')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <a href="#" class="waves-effect @if($page == in_array($page, $purchase_items)) active subdrop @endif"><i class="fa fa-sign-in"></i><span> {{__('page.purchases')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
                             <ul class="list-unstyled">
-                                <li class="@if($page == 'sale_list') active @endif"><a href="{{route('sale.index')}}" class="@if($page == 'sale_list') active @endif">{{__('page.sales_list')}}</a></li>
+                                <li class="@if($page == 'purchase_list') active @endif"><a href="{{route('purchase.index')}}" class="@if($page == 'purchase_list') active @endif">{{__('page.purchases_list')}}</a></li>
                                 @if($user->hasRole('user') || $user->hasRole('secretary'))
-                                    <li class="@if($page == 'sale_create') active @endif"><a href="{{route('sale.create')}}" class="@if($page == 'sale_create') active @endif">{{__('page.add_sale')}}</a></li>
+                                    <li class="@if($page == 'purchase_create') active @endif"><a href="{{route('purchase.create')}}" class="@if($page == 'purchase_create') active @endif">{{__('page.add_purchase')}}</a></li>
                                 @endif
                             </ul>
                         </li>
+                    @endif
+                    {{-- Sale --}}
+                    @php
+                        $sale_items = ['sale', 'sale_list', 'sale_create'];
+                    @endphp
+                    <li class="has_sub">
+                        <a href="#" class="waves-effect @if($page == in_array($page, $sale_items)) active subdrop @endif"><i class="fa fa-sign-out"></i><span> {{__('page.sales')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                        <ul class="list-unstyled">
+                            @if($role != 'secretary')
+                                <li class="@if($page == 'sale_list') active @endif"><a href="{{route('sale.index')}}" class="@if($page == 'sale_list') active @endif">{{__('page.sales_list')}}</a></li>
+                            @endif
+                            <li class="@if($page == 'sale_create') active @endif"><a href="{{route('sale.create')}}" class="@if($page == 'sale_create') active @endif">{{__('page.add_sale')}}</a></li>                            
+                        </ul>
+                    </li>
+                    @if($role != 'secretary')
                         @php
                             if($user->company){
                                 $number_of_pending_purchases = $user->company->purchases()->where('status', 0)->count();
@@ -85,103 +86,112 @@
                     <li class="@if($page == 'product') active @endif">
                         <a href="{{route('product.index')}}" class="waves-effect @if($page == 'product') active @endif"><i class="fa fa-cube"></i><span> {{__('page.product')}} </span></a>
                     </li>
-                @endif
-                {{-- Pre Order --}}
-                @php
-                    $pre_order_items = ['pre_order', 'pre_order_list', 'pre_order_create'];
-                @endphp
-
-                <li class="has_sub">
-                    <a href="#" class="waves-effect @if($page == in_array($page, $pre_order_items)) active subdrop @endif"><i class="fa fa-paper-plane-o"></i><span> {{__('page.purchase_orders')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                    <ul class="list-unstyled">
-                        <li class="@if($page == 'pre_order_list') active @endif"><a href="{{route('pre_order.index')}}" class="@if($page == 'pre_order_list') active @endif">{{__('page.purchase_orders')}}</a></li>
-                        @if($role != 'admin')
-                            <li class="@if($page == 'pre_order_create') active @endif"><a href="{{route('pre_order.create')}}" class="@if($page == 'pre_order_create') active @endif">{{__('page.add_purchase_order')}}</a></li>
-                        @endif
-                    </ul>
-                </li>
-
-                <li class="@if($page == 'received_order') active @endif">
-                    <a href="{{route('received_order.index')}}" class="waves-effect @if($page == 'received_order') active @endif"><i class="fa fa-chain"></i><span> {{__('page.received_orders')}} </span></a>
-                </li>
-
-                @if($role != 'buyer')
-
-                    @php
-                        $report_items = [
-                            'overview_chart', 
-                            'company_chart', 
-                            'store_chart', 
-                            'product_quantity_alert', 
-                            'product_expiry_alert', 
-                            'expired_purchases_report',
-                            'products_report', 
-                            'categories_report', 
-                            'sales_report', 
-                            'purchases_report', 
-                            'daily_sales', 
-                            'monthly_sales', 
-                            'payments_report', 
-                            'customers_report', 
-                            'suppliers_report', 
-                            'users_report',
-                        ];
-                    @endphp
-
-                    <li class="has_sub">
-                        <a href="#" class="waves-effect @if($page == in_array($page, $report_items)) active subdrop @endif"><i class="fa fa-file-text-o"></i><span> {{__('page.reports')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                        <ul class="list-unstyled">
-                            <li class="@if($page == 'overview_chart') active @endif"><a href="{{route('report.overview_chart')}}" class="@if($page == 'overview_chart') active @endif">{{__('page.overview_chart')}}</a></li>
-                            <li class="@if($page == 'company_chart') active @endif"><a href="{{route('report.company_chart')}}" class="@if($page == 'company_chart') active @endif">{{__('page.company_chart')}}</a></li>
-                            <li class="@if($page == 'store_chart') active @endif"><a href="{{route('report.store_chart')}}" class="@if($page == 'store_chart') active @endif">{{__('page.store_chart')}}</a></li>
-                            <li class="@if($page == 'product_quantity_alert') active @endif"><a href="{{route('report.product_quantity_alert')}}" class="@if($page == 'product_quantity_alert') active @endif">{{__('page.product_quantity_alert')}}</a></li>
-                            <li class="@if($page == 'product_expiry_alert') active @endif"><a href="{{route('report.product_expiry_alert')}}" class="@if($page == 'product_expiry_alert') active @endif">{{__('page.product_expiry_alert')}}</a></li>
-                            <li class="@if($page == 'expired_purchases_report') active @endif"><a href="{{route('report.expired_purchases_report')}}" class="@if($page == 'expired_purchases_report') active @endif">{{__('page.expired_purchases_report')}}</a></li>
-                            <li class="@if($page == 'products_report') active @endif"><a href="{{route('report.products_report')}}" class="@if($page == 'products_report') active @endif">{{__('page.product_report')}}</a></li>
-                            <li class="@if($page == 'categories_report') active @endif"><a href="{{route('report.categories_report')}}" class="@if($page == 'categories_report') active @endif">{{__('page.category_report')}}</a></li>
-                            <li class="@if($page == 'sales_report') active @endif"><a href="{{route('report.sales_report')}}" class="@if($page == 'sales_report') active @endif">{{__('page.sales_report')}}</a></li>
-                            <li class="@if($page == 'purchases_report') active @endif"><a href="{{route('report.purchases_report')}}" class="@if($page == 'purchases_report') active @endif">{{__('page.purchases_report')}}</a></li>
-                            <li class="@if($page == 'payments_report') active @endif"><a href="{{route('report.payments_report')}}" class="@if($page == 'payments_report') active @endif">{{__('page.payments_report')}}</a></li>
-                            <li class="@if($page == 'income_report') active @endif"><a href="{{route('report.income_report')}}" class="@if($page == 'income_report') active @endif">{{__('page.income_report')}}</a></li>
-                            <li class="@if($page == 'customers_report') active @endif"><a href="{{route('report.customers_report')}}" class="@if($page == 'customers_report') active @endif">{{__('page.customers_report')}}</a></li>
-                            <li class="@if($page == 'suppliers_report') active @endif"><a href="{{route('report.suppliers_report')}}" class="@if($page == 'suppliers_report') active @endif">{{__('page.suppliers_report')}}</a></li>
-                            <li class="@if($page == 'users_report') active @endif"><a href="{{route('report.users_report')}}" class="@if($page == 'users_report') active @endif">{{__('page.users_report')}}</a></li>
-                        </ul>
+                    <li class="@if($page == 'transaction') active @endif">
+                        <a href="{{route('transaction.index')}}" class="waves-effect @if($page == 'transaction') active @endif"><i class="fa fa-list-alt"></i><span> {{__('page.transaction')}} </span></a>
                     </li>
-
+                    <li class="@if($page == 'daily_transaction') active @endif">
+                        <a href="{{route('transaction.daily')}}" class="waves-effect @if($page == 'daily_transaction') active @endif"><i class="fa fa-list-alt"></i><span> {{__('page.daily_transaction')}} </span></a>
+                    </li>
+                @endif
+                @if($role != 'secretary')
+                    {{-- Pre Order --}}
                     @php
-                        $people_items = ['user', 'customer', 'supplier'];
+                        $pre_order_items = ['pre_order', 'pre_order_list', 'pre_order_create'];
                     @endphp
+
                     <li class="has_sub">
-                        <a href="#" class="waves-effect @if($page == in_array($page, $people_items)) active subdrop @endif"><i class="fa fa-user"></i><span> {{__('page.people')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                        <a href="#" class="waves-effect @if($page == in_array($page, $pre_order_items)) active subdrop @endif"><i class="fa fa-paper-plane-o"></i><span> {{__('page.purchase_orders')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
                         <ul class="list-unstyled">
-                            @if($role == 'admin')
-                                <li class="@if($page == 'user') active @endif"><a href="{{route('users.index')}}" class="@if($page == 'user') active @endif">{{__('page.user')}}</a></li>
+                            <li class="@if($page == 'pre_order_list') active @endif"><a href="{{route('pre_order.index')}}" class="@if($page == 'pre_order_list') active @endif">{{__('page.purchase_orders')}}</a></li>
+                            @if($role != 'admin')
+                                <li class="@if($page == 'pre_order_create') active @endif"><a href="{{route('pre_order.create')}}" class="@if($page == 'pre_order_create') active @endif">{{__('page.add_purchase_order')}}</a></li>
                             @endif
-                            <li class="@if($page == 'customer') active @endif"><a href="{{route('customer.index')}}" class="@if($page == 'customer') active @endif">{{__('page.customer')}}</a></li>
-                            <li class="@if($page == 'supplier') active @endif"><a href="{{route('supplier.index')}}" class="@if($page == 'supplier') active @endif">{{__('page.supplier')}}</a></li>
                         </ul>
                     </li>
 
-                    {{-- Setting --}}
-                    @php
-                        $setting_items = ['category', 'store', 'company', 'tax_rate'];
-                    @endphp
+                    <li class="@if($page == 'received_order') active @endif">
+                        <a href="{{route('received_order.index')}}" class="waves-effect @if($page == 'received_order') active @endif"><i class="fa fa-chain"></i><span> {{__('page.received_orders')}} </span></a>
+                    </li>
 
-                    <li class="has_sub">
-                        <a href="#" class="waves-effect @if($page == in_array($page, $setting_items)) active subdrop @endif"><i class="fa fa-cog"></i><span> {{__('page.setting')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                        <ul class="list-unstyled">
-                            <li class="@if($page == 'category') active @endif"><a href="{{route('category.index')}}" class="@if($page == 'category') active @endif">{{__('page.category')}}</a></li>
-                            <li class="@if($page == 'company') active @endif"><a href="{{route('company.index')}}" class="@if($page == 'company') active @endif">{{__('page.company')}}</a></li>
-                            <li class="@if($page == 'store') active @endif"><a href="{{route('store.index')}}" class="@if($page == 'store') active @endif">{{__('page.store')}}</a></li>
-                            <li class="@if($page == 'tax_rate') active @endif"><a href="{{route('tax_rate.index')}}" class="@if($page == 'tax_rate') active @endif">{{__('page.tax_rate')}}</a></li>
-                        </ul>
+                    @if($role != 'buyer')
+
+                        @php
+                            $report_items = [
+                                'overview_chart', 
+                                'company_chart', 
+                                'store_chart', 
+                                'product_quantity_alert', 
+                                'product_expiry_alert', 
+                                'expired_purchases_report',
+                                'products_report', 
+                                'categories_report', 
+                                'sales_report', 
+                                'purchases_report', 
+                                'daily_sales', 
+                                'monthly_sales', 
+                                'payments_report', 
+                                'customers_report', 
+                                'suppliers_report', 
+                                'users_report',
+                            ];
+                        @endphp
+
+                        <li class="has_sub">
+                            <a href="#" class="waves-effect @if($page == in_array($page, $report_items)) active subdrop @endif"><i class="fa fa-file-text-o"></i><span> {{__('page.reports')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <ul class="list-unstyled">
+                                <li class="@if($page == 'overview_chart') active @endif"><a href="{{route('report.overview_chart')}}" class="@if($page == 'overview_chart') active @endif">{{__('page.overview_chart')}}</a></li>
+                                <li class="@if($page == 'company_chart') active @endif"><a href="{{route('report.company_chart')}}" class="@if($page == 'company_chart') active @endif">{{__('page.company_chart')}}</a></li>
+                                <li class="@if($page == 'store_chart') active @endif"><a href="{{route('report.store_chart')}}" class="@if($page == 'store_chart') active @endif">{{__('page.store_chart')}}</a></li>
+                                <li class="@if($page == 'product_quantity_alert') active @endif"><a href="{{route('report.product_quantity_alert')}}" class="@if($page == 'product_quantity_alert') active @endif">{{__('page.product_quantity_alert')}}</a></li>
+                                <li class="@if($page == 'product_expiry_alert') active @endif"><a href="{{route('report.product_expiry_alert')}}" class="@if($page == 'product_expiry_alert') active @endif">{{__('page.product_expiry_alert')}}</a></li>
+                                <li class="@if($page == 'expired_purchases_report') active @endif"><a href="{{route('report.expired_purchases_report')}}" class="@if($page == 'expired_purchases_report') active @endif">{{__('page.expired_purchases_report')}}</a></li>
+                                <li class="@if($page == 'products_report') active @endif"><a href="{{route('report.products_report')}}" class="@if($page == 'products_report') active @endif">{{__('page.product_report')}}</a></li>
+                                <li class="@if($page == 'categories_report') active @endif"><a href="{{route('report.categories_report')}}" class="@if($page == 'categories_report') active @endif">{{__('page.category_report')}}</a></li>
+                                <li class="@if($page == 'sales_report') active @endif"><a href="{{route('report.sales_report')}}" class="@if($page == 'sales_report') active @endif">{{__('page.sales_report')}}</a></li>
+                                <li class="@if($page == 'purchases_report') active @endif"><a href="{{route('report.purchases_report')}}" class="@if($page == 'purchases_report') active @endif">{{__('page.purchases_report')}}</a></li>
+                                <li class="@if($page == 'payments_report') active @endif"><a href="{{route('report.payments_report')}}" class="@if($page == 'payments_report') active @endif">{{__('page.payments_report')}}</a></li>
+                                <li class="@if($page == 'income_report') active @endif"><a href="{{route('report.income_report')}}" class="@if($page == 'income_report') active @endif">{{__('page.income_report')}}</a></li>
+                                <li class="@if($page == 'customers_report') active @endif"><a href="{{route('report.customers_report')}}" class="@if($page == 'customers_report') active @endif">{{__('page.customers_report')}}</a></li>
+                                <li class="@if($page == 'suppliers_report') active @endif"><a href="{{route('report.suppliers_report')}}" class="@if($page == 'suppliers_report') active @endif">{{__('page.suppliers_report')}}</a></li>
+                                <li class="@if($page == 'users_report') active @endif"><a href="{{route('report.users_report')}}" class="@if($page == 'users_report') active @endif">{{__('page.users_report')}}</a></li>
+                            </ul>
+                        </li>
+
+                        @php
+                            $people_items = ['user', 'customer', 'supplier'];
+                        @endphp
+                        <li class="has_sub">
+                            <a href="#" class="waves-effect @if($page == in_array($page, $people_items)) active subdrop @endif"><i class="fa fa-user"></i><span> {{__('page.people')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <ul class="list-unstyled">
+                                @if($role == 'admin')
+                                    <li class="@if($page == 'user') active @endif"><a href="{{route('users.index')}}" class="@if($page == 'user') active @endif">{{__('page.user')}}</a></li>
+                                @endif
+                                <li class="@if($page == 'customer') active @endif"><a href="{{route('customer.index')}}" class="@if($page == 'customer') active @endif">{{__('page.customer')}}</a></li>
+                                <li class="@if($page == 'supplier') active @endif"><a href="{{route('supplier.index')}}" class="@if($page == 'supplier') active @endif">{{__('page.supplier')}}</a></li>
+                            </ul>
+                        </li>
+
+                        {{-- Setting --}}
+                        @php
+                            $setting_items = ['category', 'store', 'company', 'tax_rate'];
+                        @endphp
+
+                        <li class="has_sub">
+                            <a href="#" class="waves-effect @if($page == in_array($page, $setting_items)) active subdrop @endif"><i class="fa fa-cog"></i><span> {{__('page.setting')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <ul class="list-unstyled">
+                                <li class="@if($page == 'category') active @endif"><a href="{{route('category.index')}}" class="@if($page == 'category') active @endif">{{__('page.category')}}</a></li>
+                                <li class="@if($page == 'tcategory') active @endif"><a href="{{route('tcategory.index')}}" class="@if($page == 'tcategory') active @endif">{{__('page.transaction_category')}}</a></li>
+                                <li class="@if($page == 'company') active @endif"><a href="{{route('company.index')}}" class="@if($page == 'company') active @endif">{{__('page.company')}}</a></li>
+                                <li class="@if($page == 'store') active @endif"><a href="{{route('store.index')}}" class="@if($page == 'store') active @endif">{{__('page.store')}}</a></li>
+                                <li class="@if($page == 'tax_rate') active @endif"><a href="{{route('tax_rate.index')}}" class="@if($page == 'tax_rate') active @endif">{{__('page.tax_rate')}}</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    <li class="@if($page == 'concurrent_payments') active @endif">
+                        <a href="{{route('concurrent_payments')}}" class="waves-effect @if($page == 'concurrent_payments') active @endif"><i class="fa fa-cube"></i><span> {{__('page.concurrent_payments')}} </span></a>
                     </li>
                 @endif
-
-                <li class="@if($page == 'concurrent_payments') active @endif">
-                    <a href="{{route('concurrent_payments')}}" class="waves-effect @if($page == 'concurrent_payments') active @endif"><i class="fa fa-cube"></i><span> {{__('page.concurrent_payments')}} </span></a>
-                </li>
             </ul>
             <div class="clearfix"></div>
         </div>

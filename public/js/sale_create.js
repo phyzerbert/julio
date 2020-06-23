@@ -10,7 +10,8 @@ var app = new Vue({
             quantity: 0,
             price: 0
         },
-        grand_total: 0
+        grand_total: 0,
+        customer_price_type: 1,
     },
 
 
@@ -28,15 +29,17 @@ var app = new Vue({
             axios.get('/get_first_product')
                 .then(response => {
                     let tax_name = (response.data.tax) ? response.data.tax.name : ''
-                    let tax_rate = (response.data.tax) ? response.data.tax.rate : 0
+                    let tax_rate = (response.data.tax) ? response.data.tax.rate : 0;
+                    
                     this.order_items.push({
                         product_id: response.data.id,
                         product_name_code: response.data.name + "(" + response.data.code + ")",
-                        price: response.data.price,
+                        price: response.data['price'+this.customer_price_type],
                         tax_name: tax_name,
                         tax_rate: tax_rate,
                         quantity: 1,
                         sub_total: 0,
+                        product: response.data,
                     })
                     Vue.nextTick(function() {
                         app.$refs['product'][app.$refs['product'].length - 1].select()
@@ -51,8 +54,8 @@ var app = new Vue({
             let total_quantity = 0;
             let total_price = 0;
             for(let i = 0; i < data.length; i++) {
-                this.order_items[i].sub_total = (parseInt(data[i].price) + (data[i].price*data[i].tax_rate)/100) * data[i].quantity
-                total_quantity += parseInt(data[i].quantity)
+                this.order_items[i].sub_total = (parseFloat(data[i].price) + (data[i].price*data[i].tax_rate)/100) * data[i].quantity
+                total_quantity += parseFloat(data[i].quantity)
                 total_price += data[i].sub_total
             }
 
@@ -64,12 +67,22 @@ var app = new Vue({
         },
         remove(i) {
             this.order_items.splice(i, 1)
+        },
+        changeCustomer(e) {
+            price_type = e.target.options[e.target.selectedIndex].getAttribute('data-value');
+            if(price_type) {
+                this.customer_price_type = price_type;
+                this.order_items.map(item => {
+                    item.price = item.product['price'+price_type];
+                });
+            }
         }
     },
     filters: {
         currency: function (value) {
-            let val = value;
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            let val = parseFloat(value);
+            return val.toFixed(2);
+            // return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     },
 
@@ -88,13 +101,15 @@ var app = new Vue({
                         // response(resp.data);
                         response(
                             $.map(resp.data, function(item) {
+                                let price = parseFloat(item['price'+app.customer_price_type]).toFixed(2);
                                 return {
                                     label: item.name + "(" + item.code + ")",
                                     value: item.name + "(" + item.code + ")",
                                     id: item.id,
-                                    price: item.price ? item.price : 0,
+                                    price: price,
                                     tax_name: item.tax ? item.tax.name : '',
                                     tax_rate: item.tax ? item.tax.rate : 0,
+                                    product: item,
                                 }
                             })
                         );
@@ -107,14 +122,16 @@ var app = new Vue({
             minLength: 1,
             select: function( event, ui ) {
                 let index = $(".product").index($(this));
+                let price = parseFloat(ui.item.product['price'+app.customer_price_type]).toFixed(2);
+                console.log(price);
                 app.order_items[index].product_id = ui.item.id
                 app.order_items[index].product_name_code = ui.item.label
-                app.order_items[index].price = ui.item.price
+                app.order_items[index].price = price
                 app.order_items[index].tax_name = ui.item.tax_name
                 app.order_items[index].tax_rate = ui.item.tax_rate
                 app.order_items[index].quantity = 0
-                app.order_items[index].sub_total = ui.item.price + (ui.item.price*ui.item.tax_rate)/100
-                console.log(app.order_items)
+                app.order_items[index].sub_total = price + (price*ui.item.tax_rate)/100
+                app.order_items[index].product = ui.item.product;
             }
         });
     }

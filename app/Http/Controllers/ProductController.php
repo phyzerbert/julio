@@ -65,6 +65,7 @@ class ProductController extends Controller
         $item->code = $data['code'];
         $item->category_id = $data['category_id'];
         $item->unit = $data['unit'];
+        $item->cost = $request->get('cost');
         $item->price1 = $data['price1'];
         $item->price2 = $data['price2'];
         $item->price3 = $data['price3'];

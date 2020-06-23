@@ -193,3 +193,16 @@ Route::post('/concurrent_payments/add_payments/{id}', 'SupplierController@add_pa
 
 Route::get('/image_migrate', 'VueController@image_migrate')->name('image_migrate');
 Route::get('/image/delete/{id}', 'PurchaseController@image_delete')->name('purchase.image.delete');
+
+Route::any('/transaction/index', 'TransactionController@index')->name('transaction.index');
+Route::any('/transaction/daily', 'TransactionController@daily')->name('transaction.daily');
+Route::get('/transaction/create', 'TransactionController@create')->name('transaction.create');
+Route::post('/transaction/save', 'TransactionController@save')->name('transaction.save');
+Route::get('/transaction/edit', 'TransactionController@edit')->name('transaction.edit');
+Route::post('/transaction/update', 'TransactionController@update')->name('transaction.update');
+Route::get('/transaction/delete/{id}', 'TransactionController@delete')->name('transaction.delete');
+
+Route::any('/tcategory/index', 'TcategoryController@index')->name('tcategory.index');
+Route::post('/tcategory/create', 'TcategoryController@create')->name('tcategory.create');
+Route::post('/tcategory/edit', 'TcategoryController@edit')->name('tcategory.edit');
+Route::get('/tcategory/delete/{id}', 'TcategoryController@delete')->name('tcategory.delete');

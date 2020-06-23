@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('code')->nullable();
             $table->integer('category_id')->nullable();
             $table->string('unit')->nullable();
+            $table->decimal('cost', 8, 2)->nullable();
             $table->decimal('price1', 8, 2)->nullable();
             $table->decimal('price2', 8, 2)->nullable();
             $table->decimal('price3', 8, 2)->nullable();

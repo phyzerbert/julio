@@ -4,6 +4,9 @@
     <link href="{{asset('master/plugins/select2/dist/css/select2-bootstrap.css')}}" rel="stylesheet">
 @endsection
 @section('content')
+    @php
+        $role = Auth::user()->role->slug;
+    @endphp
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -61,6 +64,19 @@
                                 @enderror
                             </div>
                         </div>
+                        @if($role != 'secretary')
+                            <div class="col-lg-4 col-md-6 mt-3">
+                                <div class="form-group">
+                                    <label class="form-control-label">{{__('page.cost')}}: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="number" step="0.01" min="0" name="cost" placeholder="{{__('page.cost')}}" required>
+                                    @error('cost')
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
                         <div class="col-lg-4 col-md-6 mt-3">
                             <div class="form-group">
                                 <label class="form-control-label">{{__('page.product_price')}}1: <span class="tx-danger">*</span></label>
@@ -72,6 +88,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="col-lg-4 col-md-6 mt-3">
                             <div class="form-group">
                                 <label class="form-control-label">{{__('page.product_price')}}2: <span class="tx-danger">*</span></label>
@@ -151,8 +168,8 @@
                         </div>
                     </div>
                     <div class="form-layout-footer text-right">
-                        <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-check mr-2"></i> {{__('page.save')}}</button>
-                        <a href="{{route('product.index')}}" class="btn btn-warning"><i class="fa fa-times mr-2"></i> {{__('page.cancel')}}</a>
+                        <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-check mr-1"></i> {{__('page.save')}}</button>
+                        <a href="{{route('product.index')}}" class="btn btn-warning"><i class="fa fa-times mr-1"></i> {{__('page.cancel')}}</a>
                     </div>
                 </form>
             </div>

@@ -323,4 +323,13 @@ return [
     'edit_return' => 'Editar Devolucion',
     'return_list' => 'Lista de Devoluciones',
     'return_report' => 'Reporte de Devoluciones',
+    'expense' => 'Gasto',
+    'incoming' => 'Ingreso',
+    'transaction' => 'Transacciónes',
+    'transaction_management' => 'Gestión de Transacciónes',
+    'add_transaction' => 'Añadir Transacciónes',
+    'edit_transaction' => 'Editar Transacciónes',
+    'total_incoming' => 'Ingreso Totales',
+    'total_expense' => 'Gasto Totales',
+    'total_balance' => 'Balance Totales',
 ];

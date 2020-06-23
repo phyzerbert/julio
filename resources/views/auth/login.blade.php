@@ -20,7 +20,7 @@
     @endphp
 
     <div class="wrapper-page">
-        <div class="card card-pages">
+        <div class="card">
             <div class="card-body">
                 <h1 class="text-center text-primary">{{__('page.sign_in')}}</h1>
                 @error('phone')
@@ -44,7 +44,7 @@
                             </span>
                         @enderror
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" placeholder="{{__('page.password')}}">
     
                         @error('password')
@@ -65,17 +65,15 @@
                         </div>
                     </div>
                     
-                    <div class="form-group row text-center mt-3">
+                    <div class="form-group row text-center">
                         <div class="col-12">
                             <a href="{{route('lang', 'en')}}" class="btn btn-outline p-0 @if(config('app.locale') == 'en') border-primary border-2 @endif" title="English"><img src="{{asset('images/lang/en.png')}}" width="45px"></a>
                             <a href="{{route('lang', 'es')}}" class="btn btn-outline ml-2 p-0 @if(config('app.locale') == 'es') border-primary border-2 @endif" title="Spanish"><img src="{{asset('images/lang/es.png')}}" width="45px"></a>
                         </div>
-                        <div class="col-12 mt-3">
+                        <div class="col-12">
                             <button class="btn btn-primary btn-lg w-lg waves-effect waves-light mt-2" type="submit"><i class="fa fa-sign-in"></i> {{__('page.sign_in')}}</button>
                         </div>
-                    </div>
-
-                    
+                    </div>                    
                 </form> 
             </div>                
         </div>
