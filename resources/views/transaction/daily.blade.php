@@ -270,7 +270,10 @@
             //         });                    
             // });
 
-            $("#search_period").dateRangePicker();
+
+            $("#search_period").datepicker({
+                dateFormat: 'yy-mm-dd',
+            });
 
             $("#btn-add").click(function(){
                 $("#addModal").modal();
