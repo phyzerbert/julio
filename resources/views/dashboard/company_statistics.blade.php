@@ -58,7 +58,6 @@
                         $earning = $sale_subtotals - $sale_costs;
                         array_push($daily_array, $earning);
                     }
-                        dump($daily_array);
                 @endphp     
                 <div class="row">
                     <div class="col-md-12"> 
