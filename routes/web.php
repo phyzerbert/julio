@@ -206,3 +206,5 @@ Route::any('/tcategory/index', 'TcategoryController@index')->name('tcategory.ind
 Route::post('/tcategory/create', 'TcategoryController@create')->name('tcategory.create');
 Route::post('/tcategory/edit', 'TcategoryController@edit')->name('tcategory.edit');
 Route::get('/tcategory/delete/{id}', 'TcategoryController@delete')->name('tcategory.delete');
+
+Route::any('/company_statistics', 'HomeController@company_statistics')->name('company_statistics');

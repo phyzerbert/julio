@@ -95,15 +95,16 @@ class SaleController extends Controller
         if(Sale::where('reference_no', $data['reference_number'])->where('customer_id', $data['customer'])->exists()){
             return back()->withErrors(['reference_number' => 'The reference number has already been taken.']);
         }
-        $auth_store = Auth::user()->company->stores()->first();
+        // $auth_store = Auth::user()->company->stores()->first();
         $item = new Sale();
         $item->user_id = Auth::id();
         $item->biller_id = Auth::id();
         $item->timestamp = $data['date'].":00";
         $item->reference_no = $data['reference_number'];
         $item->credit_days = $data['credit_days'];
-        $item->store_id = $auth_store->id;
-        $item->company_id = $auth_store->company_id;
+        $item->store_id = $data['store'];
+        $store = Store::find($data['store']);
+        $item->company_id = $store->company_id;
         $item->customer_id = $data['customer'];
         // $item->status = $data['status'];
 

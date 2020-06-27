@@ -335,7 +335,10 @@ return [
     'edit_return' => 'Edit Return',
     'return_list' => 'Return List',
     'return_report' => 'Return Report',
-
-
+    'company_statistics' => 'Company Statistics',
+    'daily_earnings' => 'Daily Earnings',
+    'monthly_earnings' => 'Monthly Earnings',
+    'annual_earnings' => 'Annual Earnings',
+    'inventory_gain' => 'Inventory Gain',
 
 ];

@@ -184,4 +184,42 @@ class HomeController extends Controller
         return back();
     }
 
+    public function company_statistics(Request $request) {
+        config(['site.page' => 'company_statistics']);
+        $user = Auth::user();
+        if($user->hasRole('buyer')){
+            return redirect(route('pre_order.create'));
+        }
+        if($user->hasRole('secretary')){
+            return redirect(route('sale.create'));
+        }
+        $companies = Company::all();
+        if ($user->hasRole('user') || $user->hasRole('secretary')) {
+            $top_company = $user->company->id;
+        }else{
+            $top_company = Company::first()->id;
+        }
+        
+        $period = '';
+        if($request->has('period') && $request->get('period') != ""){   
+            $period = $request->get('period');
+            $from = substr($period, 0, 10);
+            $to = substr($period, 14, 10);
+        }
+
+        if(isset($from) && isset($to)){
+            $chart_start = Carbon::createFromFormat('Y-m-d', $from);
+            $chart_end = Carbon::createFromFormat('Y-m-d', $to);
+        }else{
+            $chart_start = Carbon::now()->startOfMonth();
+            $chart_end = Carbon::now()->endOfMonth();
+        }
+
+        if($request->get('top_company') != ''){
+            $top_company = $request->get('top_company');
+        }
+
+        return view('dashboard.company_statistics', compact('companies', 'chart_start', 'chart_end', 'top_company', 'period'));
+    }
+
 }

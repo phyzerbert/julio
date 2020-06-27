@@ -27,6 +27,9 @@
                     <li class="@if($page == 'home') active @endif">
                         <a href="{{route('home')}}" class="waves-effect @if($page == 'home') active @endif"><i class="fa fa-dashboard"></i><span> {{__('page.dashboard')}} </span></a>
                     </li>
+                    <li class="@if($page == 'company_statistics') active @endif">
+                        <a href="{{route('company_statistics')}}" class="waves-effect @if($page == 'company_statistics') active @endif"><i class="fa fa-dashboard"></i><span> {{__('page.company_statistics')}} </span></a>
+                    </li>
                 @endif
                 
                 @if ($role != 'buyer')

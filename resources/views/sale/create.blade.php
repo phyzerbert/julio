@@ -63,12 +63,14 @@
                             </div>
                         </div>                       
                         <div class="col-md-6 col-lg-3">
-                            @php
-                                $auth_store = Auth::user()->company->stores()->first();
-                            @endphp
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.store')}}</label>
-                                <input type="text" name="store" class="form-control" value="{{$auth_store->name}}" readonly />
+                                <select name="store" class="form-control">
+                                    <option value="" hidden>Select a store</option>
+                                    @foreach ($stores as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
