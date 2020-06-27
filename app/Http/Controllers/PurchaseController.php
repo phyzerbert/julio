@@ -99,7 +99,7 @@ class PurchaseController extends Controller
     public function create(Request $request){
         config(['site.page' => 'purchase_create']);
         $user = Auth::user();
-        $allowed = ['user', 'secretary'];
+        $allowed = ['user', 'secretary', 'admin'];
         if(!in_array($user->role->slug, $allowed)){
             return back()->withErrors(['role_error' => __('page.not_allowed_page')]);
         }

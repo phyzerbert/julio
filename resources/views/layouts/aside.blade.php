@@ -42,9 +42,7 @@
                             <a href="#" class="waves-effect @if($page == in_array($page, $purchase_items)) active subdrop @endif"><i class="fa fa-sign-in"></i><span> {{__('page.purchases')}} </span><span class="pull-right"><i class="md md-add"></i></span></a>
                             <ul class="list-unstyled">
                                 <li class="@if($page == 'purchase_list') active @endif"><a href="{{route('purchase.index')}}" class="@if($page == 'purchase_list') active @endif">{{__('page.purchases_list')}}</a></li>
-                                @if($user->hasRole('user') || $user->hasRole('secretary'))
-                                    <li class="@if($page == 'purchase_create') active @endif"><a href="{{route('purchase.create')}}" class="@if($page == 'purchase_create') active @endif">{{__('page.add_purchase')}}</a></li>
-                                @endif
+                                <li class="@if($page == 'purchase_create') active @endif"><a href="{{route('purchase.create')}}" class="@if($page == 'purchase_create') active @endif">{{__('page.add_purchase')}}</a></li>
                             </ul>
                         </li>
                     @endif
