@@ -125,14 +125,15 @@
                         </div>
                     </div>
                     @php
-                        $gain_key_array = $gain_array = array();
-                        $inventory_gain = 0;
+                        $gain_purchase = $gain_sale = $gain_inventory = 0;
                         foreach (\App\Models\Product::all() as $item) {
-                            array_push($gain_key_array, $item->name);
                             $quantity = $item->calc_quantity();
-                            $intentory_gain = $quantity * ($item->price1 - $item->cost);
-                            array_push($gain_array, $inventory_gain);
+                            $g_purchase = $quantity * $item->cost;
+                            $g_sale = $quantity * $item->price1;
+                            $gain_purchase += $g_purchase;
+                            $gain_sale += $g_sale;
                         }
+                        $gain_inventory = $gain_sale - $gain_purchase;
                     @endphp
                     <div class="col-md-6">
                         <div class="card card-body">
@@ -374,7 +375,7 @@
                         xAxis: [
                             {
                                 type: 'category',
-                                data: {!! json_encode($gain_key_array) !!},
+                                data: ['Purchase Gain', 'Sale Gain', 'Inventory Gain'],
                                 axisTick: {
                                     alignWithLabel: true
                                 }
@@ -390,7 +391,7 @@
                                 name: 'Inventory Gains',
                                 type: 'bar',
                                 barWidth: '50%',
-                                data: {!! json_encode($gain_array) !!}
+                                data: {!! json_encode([$gain_purchase, $gain_sale, $gain_inventory]) !!}
                             }
                         ]
                     });
