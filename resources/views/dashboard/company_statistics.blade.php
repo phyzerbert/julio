@@ -142,6 +142,112 @@
                         </div>
                     </div>                    
                 </div>
+                <div class="row">
+                    @php
+                        $all_products = \App\Models\Product::all();
+                        $sorted_products = $all_products->sortByDesc(function($product) {
+                            $quantity_purchased = \App\Models\Order::where('product_id', $product->id)->where('orderable_type', 'App\Models\Purchase')->sum('quantity');
+                            $quantity_saled = \App\Models\Order::where('product_id', $product->id)->where('orderable_type', 'App\Models\Sale')->sum('quantity');
+                            if($quantity_purchased == 0 ) {
+                                $rate = 0;
+                            } else {
+                                $rate = $quantity_saled / $quantity_purchased;
+                            }
+                            return $rate;
+                        })->take(10);
+                    @endphp
+                    <div class="col-md-6">
+                        <div class="card card-body table-responsive">
+                            <h3>{{__('page.top_sold_10_products')}}</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>{{__('page.code')}}</th>
+                                        <th>{{__('page.name')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($sorted_products as $item)                                        
+                                        <tr>
+                                            <td>{{$loop->index + 1}}</td>
+                                            <td>{{$item->code}}</td>
+                                            <td>{{$item->name}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @php
+                        $least_sold_products = $all_products->filter(function($product) {
+                            $quantity_purchased = \App\Models\Order::where('product_id', $product->id)->where('orderable_type', 'App\Models\Purchase')->sum('quantity');
+                            $quantity_saled = \App\Models\Order::where('product_id', $product->id)->where('orderable_type', 'App\Models\Sale')->sum('quantity');
+                            if($quantity_purchased == 0 ) {
+                                $rate = 0;
+                            } else {
+                                $rate = $quantity_saled / $quantity_purchased;
+                            }
+                            return $rate < 0.3;
+                        });
+                    @endphp
+                    <div class="col-md-6">
+                        <div class="card card-body table-responsive">
+                            <h3>{{__('page.least_sold_product')}}</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>{{__('page.code')}}</th>
+                                        <th>{{__('page.name')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($least_sold_products as $item)                                        
+                                        <tr>
+                                            <td>{{$loop->index + 1}}</td>
+                                            <td>{{$item->code}}</td>
+                                            <td>{{$item->name}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @php
+                    $all_customers = \App\Models\Customer::all();
+                    $sorted_customers = $all_customers->sortByDesc(function($customer){
+                        $customer_total = $customer->sales()->sum('grand_total');
+                        return $customer_total;
+                    })->take(15);
+                @endphp
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-body table-responsive">
+                        <h3>{{__('page.top_15_clients')}}</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>{{__('page.name')}}</th>
+                                        <th>{{__('page.email')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($sorted_customers as $item)                                        
+                                        <tr>
+                                            <td>{{$loop->index + 1}}</td>
+                                            <td>{{$item->name}}</td>
+                                            <td>{{$item->email}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
             </div>
         </div>
     </div>

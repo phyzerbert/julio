@@ -340,5 +340,8 @@ return [
     'monthly_earnings' => 'Monthly Earnings',
     'annual_earnings' => 'Annual Earnings',
     'inventory_gain' => 'Inventory Gain',
+    'top_sold_10_products' => 'Top Sold 10 Products',
+    'least_sold_product' => 'Least Sold Product',
+    'top_15_clients' => 'Top 15 Clients',
 
 ];
