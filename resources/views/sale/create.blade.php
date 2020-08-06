@@ -65,7 +65,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.store')}}</label>
-                                <select name="store" class="form-control">
+                                <select name="store" class="form-control" required>
                                     <option value="" hidden>Select a store</option>
                                     @foreach ($stores as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
