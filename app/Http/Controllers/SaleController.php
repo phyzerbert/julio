@@ -77,7 +77,7 @@ class SaleController extends Controller
         $customers = Customer::all();
         $products = Product::all();
         $stores = Store::all();
-        if($user->hasRole('user')){
+        if($user->hasRole('user') || $user->hasRole('secretary')){
             $stores = $user->company->stores;
         }
         $users = User::where('role_id', 2)->get();
@@ -106,7 +106,7 @@ class SaleController extends Controller
         $store = Store::find($data['store']);
         $item->company_id = $store->company_id;
         $item->customer_id = $data['customer'];
-        // $item->status = $data['status'];
+        $item->status = $data['status'];
 
         $item->grand_total = $data['grand_total'];
 
@@ -138,10 +138,15 @@ class SaleController extends Controller
                 'orderable_id' => $item->id,
                 'orderable_type' => Sale::class,
             ]);
-
         }
 
-        return back()->with('success', __('page.created_successfully'));
+        if($data['download']) {
+            $sale = $item;
+            $pdf = PDF::loadView('sale.report', compact('sale'));        
+            return $pdf->download('sale_report_'.$sale->reference_no.'.pdf');
+        } else {
+            return back()->with('success', __('page.created_successfully'));
+        }
     }
 
     public function edit(Request $request, $id){    

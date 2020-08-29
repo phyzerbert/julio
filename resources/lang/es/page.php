@@ -332,4 +332,5 @@ return [
     'total_incoming' => 'Ingreso Totales',
     'total_expense' => 'Gasto Totales',
     'total_balance' => 'Balance Totales',
+    'download_report' => 'Descargar Informe',
 ];

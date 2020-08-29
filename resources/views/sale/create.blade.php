@@ -29,6 +29,12 @@
 
             @php
                 $role = Auth::user()->role->slug;
+                $last_sale = \App\Models\Sale::orderBy('created_at', 'desc')->first();
+                $last_sale_id = 0;
+                if($last_sale) {
+                    $last_sale_id = $last_sale->id;
+                }
+                $ref_num = str_pad( $last_sale_id + 1, 6, "0", STR_PAD_LEFT );
             @endphp
             <div class="card card-body card-fill p-md-5" id="page">
                 <form class="form-layout form-layout-1" action="{{route('sale.save')}}" method="POST" enctype="multipart/form-data">
@@ -48,7 +54,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.reference_number')}}</label>
-                                <input class="form-control" type="text" name="reference_number" value="{{ old('reference_number') }}" placeholder="{{__('page.reference_number')}}" required>
+                                <input class="form-control" type="text" name="reference_number" value="{{$ref_num}}" placeholder="{{__('page.reference_number')}}" required>
                                 @error('reference_number')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -61,12 +67,11 @@
                                 <label class="form-control-label">{{__('page.user')}}</label>
                                 <input type="text" name="user" class="form-control" value="{{Auth::user()->name}}" readonly />
                             </div>
-                        </div>                       
+                        </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group mb-2">
                                 <label class="form-control-label">{{__('page.store')}}</label>
                                 <select name="store" class="form-control" required>
-                                    <option value="" hidden>Select a store</option>
                                     @foreach ($stores as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
                                     @endforeach
@@ -108,7 +113,24 @@
                                 <input type="file" name="attachment" id="file2" class="file-input-styled">
                             </div>
                         </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-group mb-2">
+                                <label class="form-control-label">{{__('page.status')}}</label>
+                                <select name="status" class="form-control" required>                                
+                                    <option value="1">{{__('page.paid')}}</option>
+                                    <option value="0">{{__('page.pending')}}</option> 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-check" style="margin-top:36px">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="download" value="1">{{__('page.download_report')}}
+                                </label>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="row mb-4">
                         <div class="col-md-12">
                             <div>

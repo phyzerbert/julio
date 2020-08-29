@@ -83,15 +83,15 @@
                                 <i class="fa fa-flask"></i><span> {{__('page.pending_payments')}} </span>
                             </a>
                         </li>
+                        <li class="@if($page == 'transaction') active @endif">
+                            <a href="{{route('transaction.index')}}" class="waves-effect @if($page == 'transaction') active @endif"><i class="fa fa-list-alt"></i><span> {{__('page.transaction')}} </span></a>
+                        </li>
+                        <li class="@if($page == 'daily_transaction') active @endif">
+                            <a href="{{route('transaction.daily')}}" class="waves-effect @if($page == 'daily_transaction') active @endif"><i class="fa fa-list-alt"></i><span> {{__('page.daily_transaction')}} </span></a>
+                        </li>
                     @endif
                     <li class="@if($page == 'product') active @endif">
                         <a href="{{route('product.index')}}" class="waves-effect @if($page == 'product') active @endif"><i class="fa fa-cube"></i><span> {{__('page.product')}} </span></a>
-                    </li>
-                    <li class="@if($page == 'transaction') active @endif">
-                        <a href="{{route('transaction.index')}}" class="waves-effect @if($page == 'transaction') active @endif"><i class="fa fa-list-alt"></i><span> {{__('page.transaction')}} </span></a>
-                    </li>
-                    <li class="@if($page == 'daily_transaction') active @endif">
-                        <a href="{{route('transaction.daily')}}" class="waves-effect @if($page == 'daily_transaction') active @endif"><i class="fa fa-list-alt"></i><span> {{__('page.daily_transaction')}} </span></a>
                     </li>
                 @endif
                 @if($role != 'secretary')
