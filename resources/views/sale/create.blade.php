@@ -37,7 +37,7 @@
                 $ref_num = str_pad( $last_sale_id + 1, 6, "0", STR_PAD_LEFT );
             @endphp
             <div class="card card-body card-fill p-md-5" id="page">
-                <form class="form-layout form-layout-1" action="{{route('sale.save')}}" method="POST" enctype="multipart/form-data">
+                <form class="form-layout form-layout-1" action="{{route('sale.save')}}" method="POST" enctype="multipart/form-data" id="create_form">
                     @csrf
                     <div class="row mb-4">
                         <div class="col-md-6 col-lg-3">
@@ -163,7 +163,7 @@
                                                     <option :value="item.product.price3" :selected="customer_price_type == 3">@{{item.product.price3}}</option>
                                                 </select>
                                             </td>
-                                            <td><input type="number" class="form-control form-control-sm  quantity" name="quantity[]" v-model="item.quantity" placeholder="{{__('page.quantity')}}" /></td>
+                                            <td><input type="number" class="form-control form-control-sm  quantity" name="quantity[]" min="1" v-model="item.quantity" placeholder="{{__('page.quantity')}}" /></td>
                                             <td class="tax">@{{item.tax_name}}</td>
                                             <td class="subtotal">
                                                 @{{item.sub_total | currency}}
@@ -187,7 +187,6 @@
                                     </tfoot>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                     <div class="row">
@@ -226,9 +225,9 @@
             fileButtonClass: 'action btn bg-primary text-white'
         });
         
-        $(".btn-submit").click(function () {
+        $("#create_form").submit(function (){
             $("#ajax-loading").show();
-        });    
+        });
     });
 </script>
 <script src="{{ asset('js/sale_create.js') }}"></script>

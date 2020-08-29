@@ -45,7 +45,7 @@
                 @yield('content')
 
                 <footer class="footer">
-                    2019 © {{config('app.name')}}
+                    2020 © {{config('app.name')}}
                 </footer>
 
             </div>
