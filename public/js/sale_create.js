@@ -26,24 +26,26 @@ var app = new Vue({
             //     });
         },
         add_item() {
-            axios.get('/get_first_product')
+            axios.get('/get_first_product?page=sale')
                 .then(response => {
-                    let tax_name = (response.data.tax) ? response.data.tax.name : ''
-                    let tax_rate = (response.data.tax) ? response.data.tax.rate : 0;
-                    
-                    this.order_items.push({
-                        product_id: response.data.id,
-                        product_name_code: response.data.name + "(" + response.data.code + ")",
-                        price: response.data['price'+this.customer_price_type],
-                        tax_name: tax_name,
-                        tax_rate: tax_rate,
-                        quantity: 1,
-                        sub_total: 0,
-                        product: response.data,
-                    })
-                    Vue.nextTick(function() {
-                        app.$refs['product'][app.$refs['product'].length - 1].select()
-                    });
+                    if(response.data.quantity > 0) {
+                        let tax_name = (response.data.tax) ? response.data.tax.name : ''
+                        let tax_rate = (response.data.tax) ? response.data.tax.rate : 0;
+                        
+                        this.order_items.push({
+                            product_id: response.data.id,
+                            product_name_code: response.data.name + "(" + response.data.code + ")",
+                            price: response.data['price'+this.customer_price_type],
+                            tax_name: tax_name,
+                            tax_rate: tax_rate,
+                            quantity: 1,
+                            sub_total: 0,
+                            product: response.data,
+                        })
+                        Vue.nextTick(function() {
+                            app.$refs['product'][app.$refs['product'].length - 1].select()
+                        });  
+                    }
                 })
                 .catch(error => {
                     console.log(error);
@@ -102,14 +104,16 @@ var app = new Vue({
                         response(
                             $.map(resp.data, function(item) {
                                 let price = parseFloat(item['price'+app.customer_price_type]).toFixed(2);
-                                return {
-                                    label: item.name + "(" + item.code + ")",
-                                    value: item.name + "(" + item.code + ")",
-                                    id: item.id,
-                                    price: price,
-                                    tax_name: item.tax ? item.tax.name : '',
-                                    tax_rate: item.tax ? item.tax.rate : 0,
-                                    product: item,
+                                if(item.quantity > 0) {
+                                    return {
+                                        label: item.name + "(" + item.code + ")",
+                                        value: item.name + "(" + item.code + ")",
+                                        id: item.id,
+                                        price: price,
+                                        tax_name: item.tax ? item.tax.name : '',
+                                        tax_rate: item.tax ? item.tax.rate : 0,
+                                        product: item,
+                                    }  
                                 }
                             })
                         );

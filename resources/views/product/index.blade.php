@@ -60,8 +60,8 @@
                                 <th>{{__('page.price')}}1</th>
                                 <th>{{__('page.price')}}2</th>
                                 <th>{{__('page.price')}}3</th>
+                                <th>{{__('page.quantity')}}</th>
                                 @if($role != 'secretary')
-                                    <th>{{__('page.quantity')}}</th>
                                     <th>{{__('page.product_unit')}}</th>
                                     <th>{{__('page.alert_quantity')}}</th>
                                     <th>{{__('page.action')}}</th>
@@ -105,8 +105,8 @@
                                     <td class="price1">{{number_format($item->price1, 2)}}</td>
                                     <td class="price2">{{number_format($item->price2, 2)}}</td>
                                     <td class="price3">{{number_format($item->price3, 2)}}</td>
+                                    <td class="quantity">{{number_format($quantity)}}</td>
                                     @if($role != 'secretary')
-                                        <td class="quantity">{{number_format($quantity)}}</td>
                                         <td class="unit">{{$item->unit}}</td>
                                         <td class="alert_quantity">{{$item->alert_quantity}}</td>
                                         <td class="py-2" align="center">

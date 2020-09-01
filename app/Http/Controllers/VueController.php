@@ -57,14 +57,29 @@ class VueController extends Controller
     }
 
     public function get_first_product(Request $request){
-        $item = Product::with('tax')->first();
-        return response()->json($item);
+        $first_product = Product::with('tax')->first();
+        $first_product->quantity = $first_product->calc_quantity();
+        if($request->get('page') == 'sale') {
+            $products = Product::with('tax')->get();
+            foreach ($products as $item) {
+                $item->quantity = $item->calc_quantity();
+                if($item->quantity > 0) {
+                    $first_product = $item;
+                    break;
+                }
+            }
+        }
+        
+        return response()->json($first_product);
     }
 
     public function get_autocomplete_products(Request $request){
         $keyword = $request->get('keyword');
-        $data = Product::with('tax')->where('name', 'LIKE', "%$keyword%")->orWhere('code', 'LIKE', "%$keyword%")->get();
-        return response()->json($data);
+        $products = Product::with('tax')->where('name', 'LIKE', "%$keyword%")->orWhere('code', 'LIKE', "%$keyword%")->get();
+        foreach ($products as $item) {
+            $item->quantity = $item->calc_quantity();
+        }
+        return response()->json($products);
     }
 
     public function get_pre_order(Request $request){

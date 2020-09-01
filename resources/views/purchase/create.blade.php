@@ -31,7 +31,7 @@
                 $role = Auth::user()->role->slug;
             @endphp
             <div class="card card-body card-fill p-md-5" id="page">
-                <form class="form-layout form-layout-1" action="{{route('purchase.save')}}" method="POST" enctype="multipart/form-data">
+                <form class="form-layout form-layout-1" action="{{route('purchase.save')}}" id="purchase_form" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-3">
                         <div class="col-lg-4 col-md-6 mb-3">
@@ -130,7 +130,7 @@
                                                 <input type="text" name="product_name[]" ref="product" class="form-control form-control-sm product" v-model="item.product_name_code" required />
                                             </td>
                                             <td><input type="date" class="form-control form-control-sm expiry_date" name="expiry_date[]" autocomplete="off" v-model="item.expiry_date" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" placeholder="{{__('page.expiry_date')}}" /></td>
-                                            <td><input type="number" class="form-control form-control-sm cost" name="cost[]" min="0.01" step="0.01" v-model="item.cost" required placeholder="{{__('page.product_cost')}}" /></td>
+                                            <td><input type="number" class="form-control form-control-sm cost" name="cost[]" min="0.01" step="0.1" v-model="item.cost" required placeholder="{{__('page.product_cost')}}" /></td>
                                             <td><input type="number" class="form-control form-control-sm quantity" name="quantity[]" v-model="item.quantity" required placeholder="{{__('page.quantity')}}" /></td>
                                             <td class="tax">@{{item.tax_name}}</td>
                                             <td class="subtotal">
@@ -298,7 +298,7 @@
             $("#addSupplierModal").modal();
         });
 
-        $(".btn-submit").click(function () {
+        $("#purchase_form").submit(function () {
             $("#ajax-loading").show();
         });
 
