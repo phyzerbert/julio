@@ -69,12 +69,16 @@
                                     <td class="paid"> {{ number_format($paid, 2) }} </td>
                                     <td class="balance" data-value="{{$grand_total - $paid}}"> {{number_format($grand_total - $paid, 2)}} </td>
                                     <td>
-                                        @if ($paid == 0)
-                                            <span class="badge badge-danger">{{__('page.pending')}}</span>
-                                        @elseif($paid < $grand_total)
-                                            <span class="badge badge-primary">{{__('page.partial')}}</span>
-                                        @else
+                                        @if ($item->status == 1)
                                             <span class="badge badge-success">{{__('page.paid')}}</span>
+                                        @else
+                                            @if ($paid == 0)
+                                                <span class="badge badge-danger">{{__('page.pending')}}</span>
+                                            @elseif($paid < $grand_total)
+                                                <span class="badge badge-primary">{{__('page.partial')}}</span>
+                                            @else
+                                                <span class="badge badge-success">{{__('page.paid')}}</span>
+                                            @endif
                                         @endif
                                     </td>
                                     <td class="py-2" align="center">
