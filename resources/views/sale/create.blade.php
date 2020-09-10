@@ -226,7 +226,10 @@
         });
         
         $("#create_form").submit(function (){
-            $("#ajax-loading").show();
+            $("#ajax-loading").fadeIn();
+            setTimeout(function () {
+                $("#ajax-loading").fadeOut();
+            }, 6000);
         });
     });
 </script>

@@ -139,10 +139,10 @@
                                         <td>{{$loop->index+1}}</td>
                                         <td>@isset($item->product->code){{$item->product->code}}@endisset</td>
                                         <td>@isset($item->product->name){{$item->product->name}}@endisset</td>
-                                        <td>{{number_format($item->cost)}}</td>
+                                        <td>{{number_format($item->cost, 2)}}</td>
                                         <td>{{$item->quantity}}</td>
                                         <td>@isset($item->product->tax->name){{$item->product->tax->name}}@endisset</td>
-                                        <td>{{number_format($item->subtotal)}}</td>
+                                        <td>{{number_format($item->subtotal, 2)}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -151,15 +151,15 @@
                                     <th colspan="4" class="tx-bold" style="text-align:right">{{__('page.total')}} (COP)</th>
                                     <th>{{$total_quantity}}</th>
                                     <th>{{$total_tax_rate}}</th>
-                                    <th>{{number_format($total_amount)}}</th>
+                                    <th>{{number_format($total_amount, 2)}}</th>
                                 </tr>
                                 <tr>
                                     <th colspan="6" style="text-align:right">{{__('page.discount')}} (COP)</th>
                                     <th>
                                         @if(strpos( $purchase->discount_string , '%' ) !== false)
-                                            {{$purchase->discount_string}} ({{number_format($purchase->discount)}})
+                                            {{$purchase->discount_string}} ({{number_format($purchase->discount, 2)}})
                                         @else
-                                            {{number_format($purchase->discount)}}
+                                            {{number_format($purchase->discount, 2)}}
                                         @endif
                                     </th>
                                 </tr>
@@ -167,9 +167,9 @@
                                     <th colspan="6" style="text-align:right">{{__('page.shipping')}} (COP)</th>
                                     <th>
                                         @if(strpos( $purchase->shipping_string , '%' ) !== false)
-                                            {{$purchase->shipping_string}} ({{number_format($purchase->shipping)}})
+                                            {{$purchase->shipping_string}} ({{number_format($purchase->shipping, 2)}})
                                         @else
-                                            {{number_format($purchase->shipping)}}
+                                            {{number_format($purchase->shipping, 2)}}
                                         @endif
                                     </th>
                                 </tr>
@@ -181,20 +181,20 @@
                                             $preturns = $purchase->preturns()->where('status', 1)->sum('amount');
                                             $grand_total = $purchase->grand_total - $preturns;
                                         @endphp
-                                        {{number_format($preturns)}}
+                                        {{number_format($preturns, 2)}}
                                     </th>
                                 </tr>
                                 <tr>
                                     <th colspan="6" style="text-align:right">{{__('page.total_amount')}} (COP)</th>
-                                    <th>{{number_format($grand_total)}}</th>
+                                    <th>{{number_format($grand_total, 2)}}</th>
                                 </tr>
                                 <tr>
                                     <th colspan="6" style="text-align:right">{{__('page.paid')}} (COP)</th>
-                                    <th>{{number_format($paid)}}</th>
+                                    <th>{{number_format($paid, 2)}}</th>
                                 </tr>
                                 <tr>
                                     <th colspan="6" style="text-align:right">{{__('page.balance')}} (COP)</th>
-                                    <th>{{number_format($grand_total - $paid)}}</th>
+                                    <th>{{number_format($grand_total - $paid, 2)}}</th>
                                 </tr>
                             </tfoot>
                         </table>

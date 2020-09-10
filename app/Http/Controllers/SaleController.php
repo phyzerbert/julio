@@ -140,7 +140,7 @@ class SaleController extends Controller
             ]);
         }
 
-        if($data['download']) {
+        if(isset($data['download']) && $data['download']) {
             $sale = $item;
             $pdf = PDF::loadView('sale.report', compact('sale'));        
             return $pdf->download('sale_report_'.$sale->reference_no.'.pdf');

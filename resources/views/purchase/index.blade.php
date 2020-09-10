@@ -74,13 +74,13 @@
                                     <td class="timestamp">{{date('Y-m-d H:i', strtotime($item->timestamp))}}</td>
                                     <td class="reference_no">{{$item->reference_no}}</td>
                                     <td class="supplier" data-id="{{$item->supplier_id}}">@isset($item->supplier->company){{$item->supplier->company}}@endisset</td>
-                                    <td class="grand_total"> {{number_format($grand_total)}} </td>
-                                    <td class="paid"> {{ number_format($paid) }} </td>
-                                    <td class="balance" data-value="{{$grand_total - $paid}}">
+                                    <td class="grand_total"> {{number_format($grand_total, 2)}} </td>
+                                    <td class="paid"> {{ number_format($paid, 2) }} </td>
+                                    <td class="balance" data-value="{{$grand_total - $paid, 2}}">
                                         @if($grand_total - $paid < 0)
-                                            <span class="text-danger">{{number_format($grand_total - $paid)}}</span>
+                                            <span class="text-danger">{{number_format($grand_total - $paid, 2)}}</span>
                                         @else
-                                            <span>{{number_format($grand_total - $paid)}}</span>
+                                            <span>{{number_format($grand_total - $paid, 2)}}</span>
                                         @endif
                                     </td>
                                     <td>
@@ -130,9 +130,9 @@
                         <tfoot>
                             <tr>
                                 <th colspan="4">{{__('page.total')}}</th>
-                                <th>{{number_format($footer_grand_total)}}</th>
-                                <th>{{number_format($footer_paid)}}</th>
-                                <th>{{number_format($footer_grand_total - $footer_paid)}}</th>
+                                <th>{{number_format($footer_grand_total, 2)}}</th>
+                                <th>{{number_format($footer_paid, 2)}}</th>
+                                <th>{{number_format($footer_grand_total - $footer_paid, 2)}}</th>
                                 <th colspan="2"></th>
                             </tr>
                         </tfoot>
