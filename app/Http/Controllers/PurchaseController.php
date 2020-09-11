@@ -144,7 +144,7 @@ class PurchaseController extends Controller
         }        
         $item->credit_days = $data['credit_days'];
         $item->note = $data['note'];
-        if(Auth::user()->hasRole('user')){
+        if(Auth::user()->hasRole('user') || Auth::user()->hasRole('admin')){
             $item->status = 1;
         }else{
             $item->status = 0;
